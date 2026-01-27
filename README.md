@@ -1,6 +1,6 @@
 🚀 Automatisation avec Python
 
-🚧 Projet en cours d’apprentissage visant à automatiser différentes tâches quotidiennes au sein d’une infrastructure informatique.
+🚧 Projet en cours d’apprentissage visant à automatiser différentes tâches quotidiennes au sein d’une infrastructure IT.
 
 🔧 But
 
@@ -8,21 +8,21 @@ Maîtriser Python pour automatiser efficacement des tâches IT, réduire les err
 
 🎯 Objectifs
 
-- Automatiser des tâches récurrentes au sein d’une infrastructure informatique.
+  - Automatiser des tâches récurrentes au sein d’une infrastructure informatique.
 
-- Créer des scripts flexibles et réutilisables pour différents environnements.
+  - Créer des scripts flexibles et réutilisables pour différents environnements.
 
-- Assurer la reproductibilité et la cohérence des opérations IT.
+  - Assurer la reproductibilité et la cohérence des opérations IT.
 
-- Faciliter la maintenance et la supervision des systèmes grâce à l’automatisation.
+  - Faciliter la maintenance et la supervision des systèmes grâce à l’automatisation.
 
 ⚙️ Prérequis
 
-- Python 3.x installé 
+  - Python 3.x installé 
 
-- Un éditeur de code (VS Code, PyCharm, ou autre)
+  - Un éditeur de code (VS Code, PyCharm, ou autre)
 
-- Connaissances de base en ligne de commande et systèmes Linux/Windows
+  - Connaissances de base en ligne de commande et systèmes Linux/Windows
 
 ## 📫 CONTACT
 
