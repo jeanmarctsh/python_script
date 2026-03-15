@@ -53,3 +53,6 @@ def login_run(c):
 
         else:
             print(f"Veuillez renseigner correctement les informations pour : {server}")
+
+
+    ## refaire calmement pour une bonne exécution
