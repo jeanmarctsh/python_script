@@ -20,8 +20,4 @@ def check_remote_sservers(cheeck):
 
             result = login.run("which node_exporter", warn=True, hide=True)
 
-            print(f"[OK] {server['host']} -> {result.stdout.strip()}")
-
-        except Exception as e:
-            print(f"[ERROR] Impossible de se loginecter à {server['host']}")
-            print(e)
+          ## en cours de développement
