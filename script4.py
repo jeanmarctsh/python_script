@@ -1,8 +1,46 @@
 ## INFORRMATION RELATIVE AUX DIFFERENTES MACHINES CLIENTES
 ## PROJET N COURS DE DEVELOPPEMENT
 
+## UTILISTTION DU MODULE FABRIC -----  ThreadingGroup
+
 from server_list import servers
-from fabric import ThreadingGroup as Grouup
+from fabric import ThreadingGroup as Grouup 
+import logging
+from pathlib import Path
+
+
+## utilisation du module Pathlib pour créer le dossier qui n'existe pas encore.
+
+# 1. Fixation du chemin et le rendre flexible
+
+BASE_DIR = Path(__file__).resolve().parent
+
+# 2. Mise en place et création du dossier LOG
+
+LOG_DIR = BASE_DIR / "logs"
+
+#  3. CREATTION DU DOSSIER
+
+LOG_DIR.mkdir(exist_ok=True)
+
+# CREATION DU CHEMIN POUR LE FICHIER log_app.log
+
+LOG_FILE =  LOG_DIR / "log_app.log"
+
+## Configuration des paramètres pour le module python logging
+
+logging.basicConfig(
+    level=logging.DEBUG, 
+    format="%(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(message)s",
+    handlers=  [
+
+        logging.FileHandler(LOG_FILE),
+        logging.StreamHandler()
+    ]  )
+
+
+
+## Commandes qui seront exécutées simultanément sur les machines clientes
 
 remote_commands = [
     "ip a | grep ens",
@@ -22,13 +60,22 @@ for h in servers:
 
     if host and user:
         host_server_list.append(f"{user}@{host}:{port}")
+    else:
+
+        logging.warning(f"bad value on {h}")
+        print(logging.warning("not connected"))
 
 group = Grouup(*host_server_list, connect_kwargs={"key_filename": "path-to-key"})
 
-## exécution de différentes commandes en même temps
-for apt in remote_commands:
-    print(f"\n=== Exécution de : {apt} ===")
-    if apt.startswith("sudo"):
-        group.sudo(apt.replace("sudo ", ""), hide=False)
-    else:
-        group.run(apt, hide=False)
+## exécution de différentes commandes de manière simultané avec gestion d'erreur
+# GESTION D'ERREUR  AVEC  TRY EXCEPT 
+
+try:
+
+    pass
+
+
+except:
+
+    pass
+
