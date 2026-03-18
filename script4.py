@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent
 
 LOG_DIR = BASE_DIR / "logs"
 
-#  3. CREATTION DU DOSSIER
+#  3. CREATION DU DOSSIER
 
 LOG_DIR.mkdir(exist_ok=True)
 
