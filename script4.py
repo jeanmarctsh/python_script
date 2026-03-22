@@ -4,7 +4,7 @@
 ## UTILISTTION DU MODULE FABRIC -----  ThreadingGroup
 
 from server_list import servers
-from fabric import ThreadingGroup as Grouup 
+from fabric import ThreadingGroup as Group 
 import logging
 from pathlib import Path
 
@@ -46,13 +46,14 @@ remote_commands = [
     "ip a | grep ens",
     "sudo apt update",
     "sudo apt-cache policy prometheus-node-exporter",
-    "sudo apt install node_exporter-1.10.2.linux-amd64 -y",
+    "sudo apt install prometheus-node-exporter -y",
     "sudo systemctl start node_exporter",
     "sudo systemctl status node_exporter"
 ]
 
-host_server_list = []
+## Préparation del'inventaire
 
+host_server_list = []
 for h in servers:
     host = h.get("host")
     user = h.get("user")
@@ -62,20 +63,65 @@ for h in servers:
         host_server_list.append(f"{user}@{host}:{port}")
     else:
 
-        logging.warning(f"bad value on {h}")
-        print(logging.warning("not connected"))
-
-group = Grouup(*host_server_list, connect_kwargs={"key_filename": "path-to-key"})
+        logging.warning(f"wrong entry on {h}, please,try again")
+         
 
 ## exécution de différentes commandes de manière simultané avec gestion d'erreur
 # GESTION D'ERREUR  AVEC  TRY EXCEPT 
 
-try:
+def cmd_run(group, command):
 
-    pass
+    if not command:
+        logging.warning(" Please no command found, Go to the next...")
+        return
+
+    try:
+
+        if command.startswith("sudo"):
+
+            results = group.sudo(command[5:].lstrip(), hide=True, warn=True, pty=True)
+        else:
+            results = group.run(command, hide=True, warn=True, pty=True)
+            
+        # Analyse du résultat pour chaque serveur du groupe et exécution simultanée
+
+        for connection, result in results.items():
+
+            if result.ok:
+                logging.info(f"[{connection.host}] SUCCESS : {command}")
+                logging.debug(f"Sortie : {result.stdout.strip()}")
+            else:
+                logging.error(f"[{connection.host}] FAILED : {command}")
+                logging.error(f"Erreur : {result.stderr.strip()}")
+
+    except Exception as e:
+        logging.exception(f"Erreur critique lors de l'exécution de '{command}': {e}")
+    
+    ## Execution finale
+if __name__ == "__main__":
+
+    if not host_server_list:
+        logging.critical("Aucun serveur valide dans server_list.py.")
+        exit(1)
+
+    logging.info(f"Démarrage du déploiement sur {len(host_server_list)} serveurs.")
+
+    try:
+        # création du group ssh via ssh-keygen -t ed25519
+        my_group = Group(*host_server_list, connect_kwargs={"key_filename": "path-pr-key"})
+
+        for cmd in remote_commands:
+            logging.info(f"=== EXECUTION : {cmd} ===")
+            cmd_run(my_group,cmd)
+            
+        logging.info("Processus de déploiement terminé.")
+
+    except Exception as global_err:
+        logging.critical(f"Impossible d'initialiser le groupe de serveurs : {global_err}")
 
 
-except:
 
-    pass
+
+
+    
 
